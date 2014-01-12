@@ -1,16 +1,12 @@
 require "./classes/animal"
 require "./classes/client"
 
-class shelter
+class Shelter
 	attr_accessor :animals, :clients
 
 	def initialize
-		@animals = []
-		@clients = []
-	end
-
-	def add_animal
-		
+		@animals = {}
+		@clients = {}
 	end
 
 end
