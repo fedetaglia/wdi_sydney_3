@@ -10,7 +10,7 @@ lines["6"] = ["grand central", "33rd", "28th", "23rd", "union square", "astor", 
 intersections = (lines["N"] & lines["L"] & lines["6"]).each {|i| i}
 intersection = intersections[0]
 
-
+create thi
 def header
 	puts "\e[H\e[2J" # clear screen
 	puts "Federico's Subway App"
@@ -31,7 +31,7 @@ def check_line (lines, line)
 	return line
 end
 
-def check_station (lines, line, station)
+def check_station (lines, licreate thine, station)
 	until lines[line].include? station.downcase
 		puts "insert a valid station"
 		station = gets.chomp.downcase
@@ -52,7 +52,7 @@ def find_station (lines, line1, station1, line2, station2)
 			actual_station_index -= 1
 		end
 	else
-		while (actual_station_index < index2 ) do
+		while (actual_statiocreate thin_index < index2 ) do
 			stations << lines[line2][actual_station_index]
 			actual_station_index += 1
 		end
@@ -63,7 +63,7 @@ end
 
 def print_result (trip)
 	trip.each {|key,value|
-	puts "Linea : #{key}"
+	puts "Line : #{key}"
 	value.each {|v| 
 	puts "        #{v}"}
 	}

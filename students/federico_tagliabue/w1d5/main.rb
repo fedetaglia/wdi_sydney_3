@@ -46,17 +46,18 @@ def create_shelter
 end	
 
 def add_animal_to_shelter
+	# filter only the spare animal !! 
 	if @animals.keys.count > 0 && @shelters.keys.count > 0
 		puts "#{@animals.keys}"
-		name = Console.ask("which animal?",@animals.keys)
+		animal = Console.ask("which animal?",@animals.keys)
 		puts "#{@shelters.keys}"
 		shelter = Console.ask("which shelter",@shelters.keys)
-		if 	@shelters[shelter].animals.include? name
+		if 	@shelters[shelter].animals.keys.include? animal
 			puts "already exist an animal with the same name"
 		else
-			animal_to_add = @animals[name]
-			@shelters[shelter].animals[name] = animal_to_add
-			@animals.delete(name)
+			@shelters[shelter].animals[animal] = @animals[animal]
+			@animals[animal].shelter = @shelters[shelter]
+			binding.pry
 		end
 	else
 		puts "you dont have any animal or shelter!"
@@ -64,46 +65,122 @@ def add_animal_to_shelter
 	Console.esc
 end
 
+def add_client_to_shelter
+	if @clients.keys.count > 0 && @shelters.keys.count > 0
+		puts "#{@clients.keys}"
+		client = Console.ask("which client?",@clients.keys)
+		puts "#{@shelters.keys}"
+		shelter = Console.ask("which shelter",@shelters.keys)
+		if 	@shelters[shelter].clients.keys.include? client
+			puts "already exist a client with the same name"
+		else
+			@shelters[shelter].clients[client] = @clients[client]
+			@clients[client].shelters[shelter] = @shelters[shelter]
+		end
+	else
+		puts "you dont have any clients or shelter!"
+	end
+	Console.esc
+end
+
+def client_adopt_animal
+	if @shelters.count > 0
+		puts "#{@shelters.keys}"
+		shelter = Console.ask("In which shelter you want make an adoption?",@shelters.keys)
+		if shelter != nil && @shelters[shelter].clients.count > 0 && @shelters[shelter].animals.count
+		puts "#{@shelters[shelter].clients.keys}"
+		client = Console.ask("which client want to adopt?",@shelters[shelter].clients.keys)
+		puts "#{@shelters[shelter].animals.keys}"
+		animal = Console.ask("which animal you want to adopt",@shelters[shelter].animals.keys)
+		if 	@shelters[shelter].clients[client].pets.keys.include? animal
+			puts "already have a pet with the same name"
+		else
+			@shelters[shelter].clients[client].pets[animal] = @shelters[shelter].animals[animal]
+			@shelters[shelter].animals.delete(animal)
+		end
+
+		else
+			puts "you dont have any clients or shelter!"
+		end
+	else
+		puts "you dont have any shelters"
+	end
+	Console.esc
+end
+
 def show_clients
-	puts "here the clients you created : "
-	@clients.each {|key,client| print "#{key} is #{client.age} years old and has #{client.num_children} children ! "}	
-	Console.esc
-end
-
-def show_shelters
-	puts "here the shelters you created : "
-	@shelters.each {|key,shelter| puts "#{key} - "}	
-	Console.esc
-end
-
-def show_animals
-	puts "List of spare animals : "
-	@animals.each {|key,animal| puts "#{key} is a #{animal.species} and it's a #{animal.gender} of #{animal.age} years!"}
+	puts "here the spare clients : "
+	@clients.each {|key,client| 
+		if client.shelters.count == 0
+			puts "#{key} is #{client.age} years old and has #{client.num_children} children ! "
+		end
+	}
 	puts
 	@shelters.each {|key,shelter|
-		puts "List of animals inside #{key} :"
-		shelter.animals.each { |a_keys, animal|
-			puts "#{a_keys} is a #{animal.species} and it's a #{animal.gender} of #{animal.age} years!"
+		puts "List of clients of #{key} :"
+		shelter.clients.each { |c_key, client|
+			puts "#{c_key} is #{client.age} years old and has #{client.num_children} children ! "
+
+			# print "#{c_key} has #{client.pets.keys.count} animals"
+			# if client.pets.keys.count > 0 
+			# puts " :"
+			# client.pets.each {|a_key, animal|
+			# 	puts "#{a_key} is a #{animal.species} and it's a #{animal.gender} of #{animal.age} years!"
+			# }
+			# end
 		}
 	}
 	Console.esc
 end
 
-def menu(app)
-		Console.header("Welcome to HappiTails!")
-		valid_options = ["1","2","3","4","5","6","7","8","9","q"]
-		puts "1 - Create a new animal"
-		puts "2 - Create a new client"
-		puts "3 - Create a new shelter"
-		puts "4 - Add a spare animal to a shelter"
-		puts 
-		puts 
-		puts "7 - Show existing clients"
-		puts "8 - Show existing animals"
-		puts "9 - Show existing shelters"
-		puts
-		choice = Console.ask("Choose an option or press q to exit",valid_options)
+def show_shelters
+	puts "here the shelters you created : "
+	@shelters.each {|key,shelter| puts "#{key}"}	
+	Console.esc
+end
 
+def show_animals
+	puts "List of spare animals : "
+	@animals.each {|key,animal| 
+		if animal.shelter == nil
+			puts "#{key} is a #{animal.species} and it's a #{animal.gender} of #{animal.age} years!"
+		end
+	}
+	puts
+	@shelters.each {|key,shelter|
+		if shelter.animals.keys.count > 0 
+			puts "List of animals inside #{key} :"
+			shelter.animals.each { |a_key, animal|
+				puts "#{a_key} is a #{animal.species} and it's a #{animal.gender} of #{animal.age} years!"
+				}
+		end
+	}
+	@clients.each {|key,client|
+		if client.pets.keys.count > 0 
+			puts "#{key} has these pets :"
+			client.pets.each { |a_key, pet|
+				puts "#{a_key} is a #{pet.species} and it's a #{pet.gender} of #{pet.age} years!"
+				}
+		end
+	}
+	Console.esc
+end
+
+def menu(app)
+	Console.header("Welcome to HappiTails!")
+	valid_options = ["1","2","3","4","5","6","7","8","9","10","q"]
+	puts " 1 - Create a new animal"
+	puts " 2 - Create a new client"
+	puts " 3 - Create a new shelter"
+	puts " 4 - Add a spare animal to a shelter"
+	puts " 5 - Add a client to a shelter"
+	puts " 6 - Let a client adopt an animal"
+	puts
+	puts " 8 - Show existing clients"
+	puts " 9 - Show existing animals"
+	puts "10 - Show existing shelters"
+	puts
+	choice = Console.ask("Choose an option or press q to exit",valid_options)
 	case choice
 		when "1"
 			app.create_animal
@@ -114,14 +191,16 @@ def menu(app)
 		when "4"
 			app.add_animal_to_shelter
 		when "5"
-			# let client adopts an animal from shelter
+			app.add_client_to_shelter
 		when "6"
-			# let client puts an animal up to adoption into shelter
+			app.client_adopt_animal
 		when "7"
-			app.show_clients
+			# let client puts an animal up to adoption into shelter
 		when "8"
-			app.show_animals
+			app.show_clients
 		when "9"
+			app.show_animals
+		when "10"
 			app.show_shelters
 		when "q"
 			Console.footer
@@ -133,6 +212,14 @@ end
 
 
 app = Main.new
+
+app.shelters["happi"] = Shelter.new
+app.animals["nemo"] = Animal.new("nemo",28,"male","fish")
+app.clients["fede"] = Client.new("fede",0,30)
+
+# binding.pry
 begin
 	choice = app.menu(app)
 end until choice == "q"
+
+

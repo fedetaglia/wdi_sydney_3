@@ -1,6 +1,7 @@
 class Console
 
 def self.ask(question, check = nil)
+	# a loop has to start here
 	print "#{question} >> "
 	answer = gets.chomp
 	if check == nil
@@ -14,9 +15,11 @@ def self.ask(question, check = nil)
 		if check.include? answer
 			# thanks 
 		else
-			puts "error here"# check if array or string
+			puts "error here" # check if array or string
 		end
 	end
+	# error handling - ask to insert another value
+	# end of loop if check is verified
 	return answer
 end
 
