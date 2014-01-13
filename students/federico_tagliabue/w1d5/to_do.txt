@@ -1,0 +1,36 @@
+
+FUNCTIONALITIES
+method to let person give animal up to adoption
+
+
+USER INTERFACE
+create a main manu
+
+1. Login as Admin
+	- create animals
+	- create shelter
+	- print
+
+2. Login as Client
+	- register new pets (create animals and add immidiately to client)
+	- apply to a shelter 
+		how to do handle it? I can be client of more than one shelter?
+		now client is attribute to shelter so if a client can register in more than one shelter it will be duplicated
+		maybe in shelder I should only have an array with client the index?
+
+	- adopt an animal
+	- give pet up to adoption
+
+3. New Client Registration
+	- create new client
+
+
+
+CHANGES IN CODE
+
+animal and client should be array and not hashes.
+how?
+- add the attribute .name
+- when look for client/animals check the name and take the index of array
+- in case of multiple client/animal ask for which one to choose.
+
