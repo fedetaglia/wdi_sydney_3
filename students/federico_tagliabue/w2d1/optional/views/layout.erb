@@ -1,0 +1,46 @@
+<!Doctype html>
+
+<html>
+	<head>
+	<link href="css/style.css" media="screen" rel="Stylesheet" type="text/css" />
+	<title>Pair Programming Bot</title>
+
+	<style>
+	body {
+		background: black;
+		margin:0 auto;
+	}
+	h1 {
+		color: white;
+		font-size: 50px;
+		text-align: center;
+		vertical-align: top;
+		margin-top: 100px;
+	}
+	.choice {
+		text-align: center;
+	}
+
+	button {
+		height: 40px;
+		width: 90px;
+		color: white;
+		font-size: 20px;
+		margin: 0px 20px 0px 20px
+	}
+
+	button.yes {
+		background: green;
+	}
+
+	button.no {
+		background: red;
+	}
+	</style>
+
+	</head>
+	
+	<body>
+		<%= yield %> 
+	</body>
+</html>

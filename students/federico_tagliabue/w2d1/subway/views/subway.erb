@@ -1,0 +1,37 @@
+<h1>Subway App!</h1>
+
+
+<form action="/subway" method="get">
+
+	<label for="start_point">Starting Point</label>
+	<select name="start_point">
+	<% @lines.each do |line, station| %>
+		<% station.each do |x| %>
+			<option><%= line %> - <%= x %></option>
+		<% end %>
+	<% end %>
+	</select>
+
+
+	<label for="final_point">Final Point</label>
+	<select name="final_point">
+	<% @lines.each do |line, station| %>
+		<% station.each do |x| %>
+			<option> <%= line %> - <%= x %> </option>
+		<% end %>
+	<% end %>
+	</select>
+
+	<button>Rute !</button>
+
+</form>
+
+<h1> from <%= @start_line %> <%= @start_station %> to <%= @finish_line %> <%= @finish_station %> there are <%= @trip_length %> stops </h1> 
+
+
+<% @trip.each do |line,station| %> 
+	<h2>Line : <%= line %> </h2> 
+	<% station.each do |x| %>
+		<p><%= x %></p>
+	<% end %>
+<% end %>
